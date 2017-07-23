@@ -6,6 +6,7 @@ use Investor;
 use Money\Money;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Tranche;
 use Wallet;
 
 /**
@@ -19,5 +20,12 @@ class InvestorSpec extends ObjectBehavior
         $this->beConstructedWith('name', new Wallet($balance));
 
         $this->getBalance()->shouldReturn($balance);
+    }
+
+    function it_invest_on_tranche(Tranche $tranche, Wallet $wallet)
+    {
+        $this->beConstructedWith('name', $wallet);
+
+        $this->invest(Money::GBP(1), $tranche, new \DateTimeImmutable())->shouldReturn(true);
     }
 }

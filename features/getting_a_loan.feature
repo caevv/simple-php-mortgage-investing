@@ -1,7 +1,7 @@
 Feature: Getting a loan
 
   Rules:
-  - Each of our loans has a start date and an end date.
+  - Each loan has a start date and an end date.
   - Each loan is split in multiple tranches.
   - Each tranche has a different monthly interest percentage.
   - Also each tranche has a maximum amount available to invest. So once the maximum is
@@ -12,11 +12,10 @@ Feature: Getting a loan
 
   Background:
     Given "investor 1" has "1000 GBP" in his virtual wallet
-    And "investor 2" has "1000 GBP" in his virtual wallet
+    And "investor 3" has "1000 GBP" in his virtual wallet
 
   Scenario:
-    Given a loan starts on "01/10/2015" and ends on "15/11/2015"
-    And the loan has the following tranches:
+    Given a loan starts on "01/10/2015" and ends on "15/11/2015" with the following tranches:
       | Name | Interest | Amount Available |
       | A    | 3%       | 1000 GBP         |
       | B    | 6%       | 1000 GBP         |

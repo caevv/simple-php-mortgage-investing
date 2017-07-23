@@ -31,4 +31,9 @@ class Investor
     {
         return $this->wallet->getBalance();
     }
+
+    public function invest(Money $amount, Tranche $tranche, DateTimeImmutable $date)
+    {
+        return true;
+    }
 }
