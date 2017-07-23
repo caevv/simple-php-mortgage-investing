@@ -9,9 +9,19 @@ class Investor
      */
     private $wallet;
 
-    public function __construct(Wallet $wallet)
+    /**
+     * @var string
+     */
+    private $name;
+
+    /**
+     * @param string $name
+     * @param Wallet $wallet
+     */
+    public function __construct(string $name, Wallet $wallet)
     {
         $this->wallet = $wallet;
+        $this->name = $name;
     }
 
     /**

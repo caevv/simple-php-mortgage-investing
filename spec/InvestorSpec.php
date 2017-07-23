@@ -9,7 +9,6 @@ use Prophecy\Argument;
 use Wallet;
 
 /**
- * @mixin Investor
  */
 class InvestorSpec extends ObjectBehavior
 {
@@ -17,7 +16,7 @@ class InvestorSpec extends ObjectBehavior
     {
         $balance = Money::GBP(100000);
 
-        $this->beConstructedWith(new Wallet($balance));
+        $this->beConstructedWith('name', new Wallet($balance));
 
         $this->getBalance()->shouldReturn($balance);
     }

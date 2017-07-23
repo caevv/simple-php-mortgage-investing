@@ -12,6 +12,11 @@ use Money\Money;
 class FeatureContext implements Context
 {
     /**
+     * @var Investor
+     */
+    private $investor;
+
+    /**
      * Initializes context.
      *
      * Every scenario gets its own context instance.
@@ -25,9 +30,9 @@ class FeatureContext implements Context
     /**
      * @Given :investor has :amount in his virtual wallet
      */
-    public function hasInHisVirtualWallet(Investor $investor, Money $amount)
+    public function hasInHisVirtualWallet(string $investorName, Money $amount)
     {
-        throw new PendingException();
+        $this->investor[$investorName] = new Investor($investorName, new Wallet($amount));
     }
 
     /**
