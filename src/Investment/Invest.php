@@ -29,7 +29,7 @@ class Invest
      *
      * @return Investment
      *
-     * @throws InsufficientBalance
+     * @throws InsufficientBalanceOnTranche
      */
     public function invest(Money $amount, Tranche $tranche, \DateTimeImmutable $date): Investment
     {

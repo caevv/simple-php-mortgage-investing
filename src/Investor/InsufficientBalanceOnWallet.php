@@ -6,7 +6,7 @@ use Money\Currencies\ISOCurrencies;
 use Money\Formatter\DecimalMoneyFormatter;
 use Money\Money;
 
-class WalletWithInsufficientBalance extends \InvalidArgumentException
+class InsufficientBalanceOnWallet extends \InvalidArgumentException
 {
     const MESSAGE = "Error: Wallet has insufficient balance. Available %s, attempt %s";
 

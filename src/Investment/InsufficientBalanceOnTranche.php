@@ -6,7 +6,7 @@ use Money\Currencies\ISOCurrencies;
 use Money\Formatter\DecimalMoneyFormatter;
 use Money\Money;
 
-class InsufficientBalance extends \InvalidArgumentException
+class InsufficientBalanceOnTranche extends \InvalidArgumentException
 {
     const MESSAGE = "Error: Tranche %s has insufficient balance. Available %s, attempt %s";
 

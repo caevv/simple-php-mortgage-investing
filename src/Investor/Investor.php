@@ -2,7 +2,7 @@
 
 namespace Investor;
 
-use Investment\WalletWithInsufficientBalance;
+use Investment\InsufficientBalanceOnTranche;
 use Money\Money;
 
 class Investor
@@ -30,7 +30,7 @@ class Investor
     /**
      * @param Money $amount
      *
-     * @throws WalletWithInsufficientBalance
+     * @throws InsufficientBalanceOnTranche
      */
     public function invest(Money $amount)
     {

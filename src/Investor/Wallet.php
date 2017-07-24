@@ -2,7 +2,7 @@
 
 namespace Investor;
 
-use Investment\WalletWithInsufficientBalance;
+use Investment\InsufficientBalanceOnTranche;
 use Money\Money;
 
 class Wallet
@@ -25,12 +25,12 @@ class Wallet
     /**
      * @param Money $amount
      *
-     * @throws WalletWithInsufficientBalance
+     * @throws InsufficientBalanceOnTranche
      */
     public function invest(Money $amount)
     {
         if ($this->balance->lessThan($amount)) {
-            throw new WalletWithInsufficientBalance($this->balance, $amount);
+            throw new InsufficientBalanceOnTranche($this->balance, $amount);
         }
 
         $this->balance = $this->balance->subtract($amount);

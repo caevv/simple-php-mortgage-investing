@@ -3,11 +3,10 @@
 use Behat\Behat\Context\Context;
 use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Gherkin\Node\TableNode;
-use Investment\InsufficientBalance;
+use Investment\InsufficientBalanceOnTranche;
 use Investment\Investment;
 use Investment\Loan;
 use Investment\Tranche;
-use Investment\WalletWithInsufficientBalance;
 use Investor\Investor;
 use Money\Currencies\ISOCurrencies;
 use Money\Money;
@@ -141,7 +140,7 @@ class FeatureContext implements Context
                 $this->tranches[$tranche],
                 $investDate ? : new DateTimeImmutable()
             );
-        } catch (InsufficientBalance $exception) {
+        } catch (InsufficientBalanceOnTranche $exception) {
             $this->error = $exception;
         }
     }
@@ -191,21 +190,9 @@ class FeatureContext implements Context
      */
     public function investorShouldGetAnErrorMessageWithInsufficientBalanceOnTranche(string $investor)
     {
-        Assert::assertInstanceOf(InsufficientBalance::class, $this->error);
+        Assert::assertInstanceOf(InsufficientBalanceOnTranche::class, $this->error);
         Assert::assertContains(
             'Error: Tranche',
-            $this->error->getMessage()
-        );
-    }
-
-    /**
-     * @Then :investor should get an error message with insufficient balance on wallet
-     */
-    public function investorShouldGetAnErrorMessageWithInsufficientBalanceOnWallet(string $investor)
-    {
-        Assert::assertInstanceOf(WalletWithInsufficientBalance::class, $this->error);
-        Assert::assertContains(
-            "Error: Wallet has insufficient balance.",
             $this->error->getMessage()
         );
     }
