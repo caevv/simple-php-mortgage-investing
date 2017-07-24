@@ -1,5 +1,8 @@
 <?php
 
+namespace Investment;
+
+use Investor\Investor;
 use Money\Money;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -11,7 +14,7 @@ class Investment
      */
     private $investor;
     /**
-     * @var DateTimeImmutable
+     * @var \DateTimeImmutable
      */
     private $date;
     /**
@@ -30,12 +33,13 @@ class Investment
 
     /**
      * Investment constructor.
-     * @param Investor $investor
-     * @param DateTimeImmutable $date
-     * @param Tranche $tranche
-     * @param Money $amount
+     *
+     * @param Investor           $investor
+     * @param \DateTimeImmutable $date
+     * @param Tranche            $tranche
+     * @param Money              $amount
      */
-    public function __construct(Investor $investor, DateTimeImmutable $date, Tranche $tranche, Money $amount)
+    public function __construct(Investor $investor, \DateTimeImmutable $date, Tranche $tranche, Money $amount)
     {
         $this->id = Uuid::uuid4();
 
@@ -62,9 +66,9 @@ class Investment
     }
 
     /**
-     * @return DateTimeImmutable
+     * @return \DateTimeImmutable
      */
-    public function getDate(): DateTimeImmutable
+    public function getDate(): \DateTimeImmutable
     {
         return $this->date;
     }

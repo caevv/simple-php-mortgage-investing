@@ -2,14 +2,18 @@
 
 use Behat\Behat\Context\Context;
 use Behat\Behat\Tester\Exception\PendingException;
-use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
+use Investment\Investment;
+use Investment\Loan;
+use Investment\Tranche;
+use Investor\Investor;
 use Money\Currencies\ISOCurrencies;
-use Money\Currency;
-use Money\Formatter\DecimalMoneyFormatter;
 use Money\Money;
 use Money\Parser\DecimalMoneyParser;
 use PHPUnit\Framework\Assert;
+use Investor\Wallet;
+use Investment\Invest;
+use Investment\CalculateInvestment;
 
 /**
  * Defines application features from the specific context.

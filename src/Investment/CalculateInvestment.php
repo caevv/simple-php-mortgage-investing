@@ -1,5 +1,7 @@
 <?php
 
+namespace Investment;
+
 class CalculateInvestment
 {
     /**
@@ -16,11 +18,11 @@ class CalculateInvestment
     }
 
     /**
-     * @param DateTimeImmutable $endDate
+     * @param \DateTimeImmutable $endDate
      *
      * @return array
      */
-    public function calculate(DateTimeImmutable $endDate): array
+    public function calculate(\DateTimeImmutable $endDate): array
     {
         $calculatedInvestment = [];
 
@@ -35,7 +37,9 @@ class CalculateInvestment
 
             $interest = $dailyInterest * iterator_count($dateRange);
 
-            $calculatedInvestment[$investment->getId()->toString()] = $investment->getAmount()->multiply($interest / 100);
+            $investmentId = $investment->getId()->toString();
+
+            $calculatedInvestment[$investmentId] = $investment->getAmount()->multiply($interest / 100);
         }
 
         return $calculatedInvestment;

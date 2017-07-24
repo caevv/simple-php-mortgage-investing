@@ -1,5 +1,7 @@
 <?php
 
+namespace Investment;
+
 use Money\Money;
 
 class Tranche
@@ -21,8 +23,8 @@ class Tranche
 
     /**
      * @param string $name
-     * @param int $interest
-     * @param Money $amountAvailable
+     * @param int    $interest
+     * @param Money  $amountAvailable
      */
     public function __construct(string $name, int $interest, Money $amountAvailable)
     {

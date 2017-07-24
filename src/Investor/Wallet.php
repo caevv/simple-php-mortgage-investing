@@ -1,5 +1,7 @@
 <?php
 
+namespace Investor;
+
 use Money\Money;
 
 class Wallet

@@ -1,15 +1,14 @@
 <?php
 
-namespace spec;
+namespace spec\Investor;
 
 use Investor;
+use Investor\Wallet;
 use Money\Money;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Tranche;
-use Wallet;
 
 /**
+ * @mixin Investor\Investor
  */
 class InvestorSpec extends ObjectBehavior
 {

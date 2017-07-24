@@ -1,6 +1,6 @@
 <?php
 
-namespace spec;
+namespace spec\Investor;
 
 use Money\Money;
 use PhpSpec\ObjectBehavior;
