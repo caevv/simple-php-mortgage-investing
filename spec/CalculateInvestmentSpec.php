@@ -3,24 +3,27 @@
 namespace spec;
 
 use Investment;
-use Investor;
 use Money\Money;
 use PhpSpec\ObjectBehavior;
+use Ramsey\Uuid\Uuid;
 use Tranche;
-use Wallet;
 
 class CalculateInvestmentSpec extends ObjectBehavior
 {
-    function it_calculates_for_period()
+    function it_calculates_for_period(Investment $investment, Tranche $tranche)
     {
-        $investor = new Investor('1', new Wallet(Money::GBP(100000)));
-        $tranche = new Tranche('A', 3, Money::GBP(100000));
-
         $endDate = new \DateTimeImmutable('2015-10-31');
-        $investment = new Investment($investor, new \DateTimeImmutable('2015-10-03'), $tranche, Money::GBP(100000));
+
+        $investment->getDate()->willReturn(new \DateTimeImmutable('2015-10-03'));
+        $tranche->getInterest()->willReturn(3);
+
+        $investment->getTranche()->willReturn($tranche->getWrappedObject());
+        $uuid = Uuid::uuid4();
+        $investment->getId()->willReturn($uuid);
+        $investment->getAmount()->willReturn(Money::GBP(100000));
 
         $this->beConstructedWith([$investment]);
 
-        $this->calculate($endDate)->shouldBeLike([$investment->getId()->toString() => Money::GBP(2806)]);
+        $this->calculate($endDate)->shouldBeLike([$uuid->toString() => Money::GBP(2806)]);
     }
 }
