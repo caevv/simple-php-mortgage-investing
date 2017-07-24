@@ -30,4 +30,12 @@ class Tranche
         $this->interest = $interest;
         $this->amountAvailable = $amountAvailable;
     }
+
+    /**
+     * @return int
+     */
+    public function getInterest(): int
+    {
+        return $this->interest;
+    }
 }

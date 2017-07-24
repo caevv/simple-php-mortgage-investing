@@ -9,6 +9,7 @@ use Money\Currency;
 use Money\Formatter\DecimalMoneyFormatter;
 use Money\Money;
 use Money\Parser\DecimalMoneyParser;
+use PHPUnit\Framework\Assert;
 
 /**
  * Defines application features from the specific context.
@@ -18,7 +19,7 @@ class FeatureContext implements Context
     /**
      * @var Investor[]
      */
-    private $investor;
+    private $investors;
 
     /**
      * @var Loan
@@ -28,7 +29,17 @@ class FeatureContext implements Context
     /**
      * @var Tranche[]
      */
-    private $tranche;
+    private $tranches;
+
+    /**
+     * @var Investment[]
+     */
+    private $investments;
+
+    /**
+     * @var array
+     */
+    private $interest;
 
     /**
      * Initializes context.
@@ -61,6 +72,7 @@ class FeatureContext implements Context
      * @Transform :loanBeginDate
      * @Transform :loanEndDate
      * @Transform :investDate
+     * @Transform :startDate
      * @Transform :endDate
      *
      * @param string $dateString
@@ -76,45 +88,63 @@ class FeatureContext implements Context
      */
     public function hasInHisVirtualWallet(string $investorName, Money $amount)
     {
-        $this->investor[$investorName] = new Investor($investorName, new Wallet($amount));
+        $this->investors[$investorName] = new Investor($investorName, new Wallet($amount));
     }
 
     /**
      * @Given a loan starts on :loanBeginDate and ends on :loanEndDate with the following tranches:
      */
-    public function aLoanStartsOnAndEndsOn(\DateTimeImmutable $loanBeginDate, \DateTimeImmutable $loanEndDate, TableNode $table)
-    {
+    public function aLoanStartsOnAndEndsOn(
+        \DateTimeImmutable $loanBeginDate,
+        \DateTimeImmutable $loanEndDate,
+        TableNode $table
+    ) {
         foreach ($table as $trancheData) {
             $interest = explode('%', $trancheData['Interest'])[0];
-            $this->tranche[$trancheData['Name']] = new Tranche($trancheData['Name'], $interest, $this->makeMoney($trancheData['Amount Available']));
+            $this->tranches[$trancheData['Name']] = new Tranche(
+                $trancheData['Name'],
+                $interest,
+                $this->makeMoney($trancheData['Amount Available'])
+            );
         }
 
-        $this->loan = new Loan($this->tranche, $loanBeginDate, $loanEndDate);
+        $this->loan = new Loan($this->tranches, $loanBeginDate, $loanEndDate);
     }
 
     /**
      * @Given :investor invest :amount on tranche :tranche on :investDate
      * @Given :investor invest :amount on tranche :tranche
      */
-    public function investOnTrancheAOn(string $investor, Money $amount, string $tranche, DateTimeImmutable $investDate = null)
-    {
-        $this->investor[$investor]->invest($amount, $this->tranche[$tranche], $investDate ?: new DateTimeImmutable());
+    public function investOnTrancheAOn(
+        string $investor,
+        Money $amount,
+        string $tranche,
+        DateTimeImmutable $investDate = null
+    ) {
+        $this->investments[$investor] = (new Invest($this->investors[$investor]))->invest(
+            $amount,
+            $this->tranches[$tranche],
+            $investDate ?: new DateTimeImmutable()
+        );
     }
 
     /**
      * @When the interest is calculated for the period of :startDate to :endDate
      */
-    public function theInterestisCalculatedForThePeriodOfTo(DateTimeImmutable $startDate, DateTimeImmutable $endDate)
+    public function theInterestsCalculatedForThePeriodOfTo(DateTimeImmutable $startDate, DateTimeImmutable $endDate)
     {
-        throw new PendingException();
+        $this->interest = (new CalculateInvestment($this->investments))->calculate($endDate);
     }
 
     /**
      * @Then :investor earns :amount
      */
-    public function earns(Investor $investor, Money $amount)
+    public function earns(string $investor, Money $amount)
     {
-        throw new PendingException();
+        Assert::assertEquals(
+            $amount,
+            $this->interest[$this->investments[$investor]->getId()->toString()]
+        );
     }
 
     /**

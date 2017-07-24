@@ -23,4 +23,4 @@ Feature: Getting a loan
     And "investor 3" invest "500 GBP" on tranche B on "10/10/2015"
     When the interest is calculated for the period of "01/10/2015" to "31/10/2015"
     Then "investor 1" earns "28.06 GBP"
-    And "investor 2" earns "21.29 GBP"
+    And "investor 3" earns "21.29 GBP"

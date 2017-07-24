@@ -21,11 +21,4 @@ class InvestorSpec extends ObjectBehavior
 
         $this->getBalance()->shouldReturn($balance);
     }
-
-    function it_invest_on_tranche(Tranche $tranche, Wallet $wallet)
-    {
-        $this->beConstructedWith('name', $wallet);
-
-        $this->invest(Money::GBP(1), $tranche, new \DateTimeImmutable())->shouldReturn(true);
-    }
 }

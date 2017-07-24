@@ -32,8 +32,11 @@ class Investor
         return $this->wallet->getBalance();
     }
 
-    public function invest(Money $amount, Tranche $tranche, DateTimeImmutable $date)
+    /**
+     * @return string
+     */
+    public function getName(): string
     {
-        return true;
+        return $this->name;
     }
 }
