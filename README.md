@@ -10,6 +10,8 @@
 
 Features can be found on /features with the investment and how it's done.
 
+- For easy to see the code running, there is an echo on the features\getting_a_loan.feature to see the amount earned, and that can be changed to any other amount for testing.
+
 Run tests:
 
 ```docker-compose exec php vendor/bin/phpspec run```

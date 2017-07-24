@@ -9,6 +9,7 @@ use Investment\Loan;
 use Investment\Tranche;
 use Investor\Investor;
 use Money\Currencies\ISOCurrencies;
+use Money\Formatter\DecimalMoneyFormatter;
 use Money\Money;
 use Money\Parser\DecimalMoneyParser;
 use PHPUnit\Framework\Assert;
@@ -42,7 +43,7 @@ class FeatureContext implements Context
     private $investments;
 
     /**
-     * @var array
+     * @var Money[]
      */
     private $interest;
 
@@ -158,9 +159,13 @@ class FeatureContext implements Context
      */
     public function earns(string $investor, Money $amount)
     {
+        $calculatedInvestment = $this->interest[$this->investments[$investor]->getId()->toString()];
+
+        echo "Amount earned: " . (new DecimalMoneyFormatter(new ISOCurrencies()))->format($calculatedInvestment);
+
         Assert::assertEquals(
             $amount,
-            $this->interest[$this->investments[$investor]->getId()->toString()]
+            $calculatedInvestment
         );
     }
 

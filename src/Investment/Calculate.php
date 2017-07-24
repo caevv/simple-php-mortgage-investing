@@ -2,6 +2,8 @@
 
 namespace Investment;
 
+use Money\Money;
+
 class Calculate
 {
     /**
@@ -20,7 +22,7 @@ class Calculate
     /**
      * @param \DateTimeImmutable $endDate
      *
-     * @return array
+     * @return Money[]
      */
     public function calculate(\DateTimeImmutable $endDate): array
     {
