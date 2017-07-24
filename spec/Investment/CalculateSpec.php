@@ -2,7 +2,7 @@
 
 namespace spec\Investment;
 
-use Investment\CalculateInvestment;
+use Investment\Calculate;
 use Investment\Investment;
 use Money\Money;
 use PhpSpec\ObjectBehavior;
@@ -10,9 +10,9 @@ use Ramsey\Uuid\Uuid;
 use Investment\Tranche;
 
 /**
- * @mixin CalculateInvestment
+ * @mixin Calculate
  */
-class CalculateInvestmentSpec extends ObjectBehavior
+class CalculateSpec extends ObjectBehavior
 {
     function it_calculates_for_period(Investment $investment, Tranche $tranche)
     {

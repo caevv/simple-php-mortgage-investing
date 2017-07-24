@@ -34,6 +34,20 @@ class Tranche
     }
 
     /**
+     * @param Money $amount
+     *
+     * @throws InsufficientBalance
+     */
+    public function invest(Money $amount)
+    {
+        if ($this->amountAvailable->lessThan($amount)) {
+            throw new InsufficientBalance($this->name, $this->amountAvailable, $amount);
+        }
+
+        $this->amountAvailable = $this->amountAvailable->subtract($amount);
+    }
+
+    /**
      * @return int
      */
     public function getInterest(): int

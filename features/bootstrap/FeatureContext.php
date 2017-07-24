@@ -3,6 +3,7 @@
 use Behat\Behat\Context\Context;
 use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Gherkin\Node\TableNode;
+use Investment\InsufficientBalance;
 use Investment\Investment;
 use Investment\Loan;
 use Investment\Tranche;
@@ -13,7 +14,7 @@ use Money\Parser\DecimalMoneyParser;
 use PHPUnit\Framework\Assert;
 use Investor\Wallet;
 use Investment\Invest;
-use Investment\CalculateInvestment;
+use Investment\Calculate;
 
 /**
  * Defines application features from the specific context.
@@ -46,6 +47,11 @@ class FeatureContext implements Context
     private $interest;
 
     /**
+     * @var Exception
+     */
+    private $error;
+
+    /**
      * Initializes context.
      *
      * Every scenario gets its own context instance.
@@ -60,6 +66,7 @@ class FeatureContext implements Context
      * @Transform :amount
      *
      * @param string $money
+     *
      * @return Money
      */
     public function makeMoney(string $money): Money
@@ -78,8 +85,10 @@ class FeatureContext implements Context
      * @Transform :investDate
      * @Transform :startDate
      * @Transform :endDate
+     * @Transform :date
      *
      * @param string $dateString
+     *
      * @return DateTimeImmutable
      */
     public function makeDate(string $dateString): DateTimeImmutable
@@ -125,11 +134,15 @@ class FeatureContext implements Context
         string $tranche,
         DateTimeImmutable $investDate = null
     ) {
-        $this->investments[$investor] = (new Invest($this->investors[$investor]))->invest(
-            $amount,
-            $this->tranches[$tranche],
-            $investDate ?: new DateTimeImmutable()
-        );
+        try {
+            $this->investments[$investor] = (new Invest($this->investors[$investor]))->invest(
+                $amount,
+                $this->tranches[$tranche],
+                $investDate ? : new DateTimeImmutable()
+            );
+        } catch (InsufficientBalance $exception) {
+            $this->error = $exception;
+        }
     }
 
     /**
@@ -137,7 +150,7 @@ class FeatureContext implements Context
      */
     public function theInterestsCalculatedForThePeriodOfTo(DateTimeImmutable $startDate, DateTimeImmutable $endDate)
     {
-        $this->interest = (new CalculateInvestment($this->investments))->calculate($endDate);
+        $this->interest = (new Calculate($this->investments))->calculate($endDate);
     }
 
     /**
@@ -160,19 +173,28 @@ class FeatureContext implements Context
     }
 
     /**
-     * @Given investors have already invested :amount on tranche :tranche
+     * @Given investors have already invested :amount on tranche :tranche on :date
      */
-    public function investorsHaveAlreadyInvestedOnTrancheA(Money $amount, Tranche $tranche)
+    public function investorsHaveAlreadyInvestedOnTrancheAOn(Money $amount, string $tranche, \DateTimeImmutable $date)
     {
-        throw new PendingException();
+        (new Invest(new Investor('any', new Wallet(Money::GBP(1000000)))))
+            ->invest(
+                $amount,
+                $this->tranches[$tranche],
+                $date
+            );
     }
 
     /**
-     * @Then the investor should get an exception error message
+     * @Then :investor should get an exception error message
      */
-    public function theInvestorShouldGetAnExceptionErrorMessage()
+    public function investorShouldGetAnExceptionErrorMessage(string $investor)
     {
-        throw new PendingException();
+        Assert::assertInstanceOf(InsufficientBalance::class, $this->error);
+        Assert::assertContains(
+            'Error: Tranche',
+            $this->error->getMessage()
+        );
     }
 
     /**

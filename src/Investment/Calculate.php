@@ -2,7 +2,7 @@
 
 namespace Investment;
 
-class CalculateInvestment
+class Calculate
 {
     /**
      * @var array
