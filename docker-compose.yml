@@ -1,0 +1,26 @@
+nginx:
+    build: ./docker/nginx/
+    ports:
+        - 80:80
+    links:
+        - php
+    volumes_from:
+        - app_data
+    volumes:
+        - ./docker/nginx/conf.d:/etc/nginx/conf.d/
+
+php:
+    build: ./docker/php/
+    volumes_from:
+        - app_data
+
+php-dev:
+    build: ./docker/php-dev/
+    volumes_from:
+        - app_data
+
+app_data:
+    image: php:7.0-fpm
+    volumes:
+        - ./:/var/www/html:rw
+    command: "true"
