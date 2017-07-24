@@ -2,6 +2,7 @@
 
 namespace Investor;
 
+use Investment\WalletWithInsufficientBalance;
 use Money\Money;
 
 class Investor
@@ -24,6 +25,16 @@ class Investor
     {
         $this->wallet = $wallet;
         $this->name = $name;
+    }
+
+    /**
+     * @param Money $amount
+     *
+     * @throws WalletWithInsufficientBalance
+     */
+    public function invest(Money $amount)
+    {
+        $this->wallet->invest($amount);
     }
 
     /**

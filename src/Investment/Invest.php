@@ -28,10 +28,14 @@ class Invest
      * @param \DateTimeImmutable $date
      *
      * @return Investment
+     *
+     * @throws InsufficientBalance
      */
     public function invest(Money $amount, Tranche $tranche, \DateTimeImmutable $date): Investment
     {
         $tranche->invest($amount);
+        $this->investor->invest($amount);
+
         return new Investment($this->investor, $date, $tranche, $amount);
     }
 }

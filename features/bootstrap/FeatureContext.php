@@ -7,6 +7,7 @@ use Investment\InsufficientBalance;
 use Investment\Investment;
 use Investment\Loan;
 use Investment\Tranche;
+use Investment\WalletWithInsufficientBalance;
 use Investor\Investor;
 use Money\Currencies\ISOCurrencies;
 use Money\Money;
@@ -186,9 +187,9 @@ class FeatureContext implements Context
     }
 
     /**
-     * @Then :investor should get an exception error message
+     * @Then :investor should get an error message with insufficient balance on tranche
      */
-    public function investorShouldGetAnExceptionErrorMessage(string $investor)
+    public function investorShouldGetAnErrorMessageWithInsufficientBalanceOnTranche(string $investor)
     {
         Assert::assertInstanceOf(InsufficientBalance::class, $this->error);
         Assert::assertContains(
@@ -198,10 +199,14 @@ class FeatureContext implements Context
     }
 
     /**
-     * @Given investors have already invested :amount on :tranche
+     * @Then :investor should get an error message with insufficient balance on wallet
      */
-    public function investorsHaveAlreadyInvestedOnTranche(Money $amount, Tranche $tranche)
+    public function investorShouldGetAnErrorMessageWithInsufficientBalanceOnWallet(string $investor)
     {
-        throw new PendingException();
+        Assert::assertInstanceOf(WalletWithInsufficientBalance::class, $this->error);
+        Assert::assertContains(
+            "Error: Wallet has insufficient balance.",
+            $this->error->getMessage()
+        );
     }
 }

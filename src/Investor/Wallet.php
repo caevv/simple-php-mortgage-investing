@@ -2,6 +2,7 @@
 
 namespace Investor;
 
+use Investment\WalletWithInsufficientBalance;
 use Money\Money;
 
 class Wallet
@@ -19,6 +20,20 @@ class Wallet
     public function __construct(Money $balance)
     {
         $this->balance = $balance;
+    }
+
+    /**
+     * @param Money $amount
+     *
+     * @throws WalletWithInsufficientBalance
+     */
+    public function invest(Money $amount)
+    {
+        if ($this->balance->lessThan($amount)) {
+            throw new WalletWithInsufficientBalance($this->balance, $amount);
+        }
+
+        $this->balance = $this->balance->subtract($amount);
     }
 
     /**
